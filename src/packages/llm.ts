@@ -1,6 +1,7 @@
 import { Message } from '../stores/types'
 import * as wordCount from './utils'
 import { createParser } from 'eventsource-parser'
+import { context } from './context';
 
 export interface OnTextCallbackResult {
     // response content
@@ -45,6 +46,9 @@ export async function chat(
     if (head) {
         prompts = [head, ...prompts]
     }
+
+    // intercept prompts here to modify in 'addContext.ts'
+    prompts = context(prompts);
 
     // fetch has been canceled
     let hasCancel = false
